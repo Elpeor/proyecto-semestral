@@ -1,0 +1,55 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-tienda
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: tienda
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - tienda-network
+
+  backend-ventas:
+    image: backend-ventas:latest
+    container_name: backend-ventas
+    restart: always
+    depends_on:
+      - mysql-db
+    environment:
+      APP_NAME: backend-ventas
+      SERVER_PORT: 3001
+      DB_URL: jdbc:mysql://mysql-db:3306/tienda?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      DB_USER: root
+      DB_PASSWORD: admin123
+    ports:
+      - "3001:3001"
+    networks:
+      - tienda-network
+
+  backend-despacho:
+    image: backend-despacho:latest
+    container_name: backend-despacho
+    restart: always
+    depends_on:
+      - mysql-db
+    environment:
+      APP_NAME: backend-despacho
+      SERVER_PORT: 3002
+      DB_URL: jdbc:mysql://mysql-db:3306/tienda?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      DB_USER: root
+      DB_PASSWORD: admin123
+    ports:
+      - "3002:3002"
+    networks:
+      - tienda-network
+
+volumes:
+  mysql_data:
+
+networks:
+  tienda-network:
+    driver: bridge
