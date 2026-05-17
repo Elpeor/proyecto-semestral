@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "back-Ventas_Springboot/**"
+      - "back-Ventas_SpringBoot/**"
 
 jobs:
   build-push-deploy-backend-ventas:
