@@ -27,7 +27,7 @@ jobs:
 
     - name: Build imagen Backend y push a ECR
       run: |
-        cd back-Ventas_Springboot
+        cd back-Ventas_SpringBoot
         cd Springboot-API-REST
         docker build -t tienda-backend-ventas .
         docker tag tienda-backend-ventas:latest ${{ secrets.ECR_REPO_URL_BACKEND_TIENDAS }}:latest
