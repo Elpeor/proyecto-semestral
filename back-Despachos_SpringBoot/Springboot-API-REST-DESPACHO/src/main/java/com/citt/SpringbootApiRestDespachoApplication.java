@@ -8,5 +8,6 @@ public class SpringbootApiRestDespachoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApiRestDespachoApplication.class, args);
+		// este comentario es solo para comprobar el funcionamiento del pipeline de CI/CD
 	}
 }
