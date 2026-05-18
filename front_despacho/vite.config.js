@@ -7,18 +7,18 @@ export default defineConfig({
   server: {
     proxy: {
 
-      '/ventas': {
+      // Backend 1
+      '/api/v1/ventas': {
         target: 'http://10.0.0.158:3001',
         changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/ventas/, '/api/v1/ventas')
+        secure: false
       },
 
-      '/despachos': {
+      // Backend 2
+      '/api/v1/despachos': {
         target: 'http://10.0.0.132:3002',
         changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/despachos/, '/api/v1/despachos')
+        secure: false
       }
 
     }
