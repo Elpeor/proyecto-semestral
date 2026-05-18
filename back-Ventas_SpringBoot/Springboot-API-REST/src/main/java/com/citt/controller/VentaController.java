@@ -3,6 +3,8 @@ package com.citt.controller;
 import com.citt.exceptions.VentaNotFoundException;
 import com.citt.persistence.entity.Venta;
 import com.citt.persistence.services.VentaService;
+import com.citt.persistence.services.VentaServiceImpl;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -21,7 +23,7 @@ import java.util.List;
 public class VentaController {
 
     @Autowired
-    private VentaService ventaService;
+    private VentaServiceImpl ventaService;
 
     @Operation(summary = "Crear una nueva venta", description = "Crea una nueva venta en el sistema")
     @PostMapping
