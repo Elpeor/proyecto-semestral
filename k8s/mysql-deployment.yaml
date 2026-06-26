@@ -20,20 +20,11 @@ spec:
             - containerPort: 3306
 
           env:
-            - name: MYSQL_DATABASE
-              value: tienda
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_ROOT_PASSWORD
 
-          volumeMounts:
-          - name: init-script
-            mountPath: /docker-entrypoint-initdb.d/init.sql
-            subPath: init.sql
-
-      volumes:
-        - name: init-script
-          configMap:
-            name: mysql-init-script
+          - name: MYSQL_DATABASE
+            value: tienda
