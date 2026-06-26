@@ -15,23 +15,19 @@ spec:
     spec:
       containers:
         - name: backend-despacho
-          image: 022983448261.dkr.ecr.us-east-1.amazonaws.com/backend-despacho
+          image: 022983448261.dkr.ecr.us-east-1.amazonaws.com/backend-despacho:${IMAGE_TAG}
           ports:
             - containerPort: 3002
           env:
-            - name: DB_HOST
-              value: "db"
-            - name: DB_USER
-              value: "root"
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-secret
-                  key: MYSQL_ROOT_PASSWORD
-            - name: DB_NAME
-              value: "tienda"
-            - name: DB_PORT
-              value: "3306"
+          - name: DB_URL
+            value: jdbc:mysql://db:3306/tienda
+          - name: DB_USER
+            value: root
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: MYSQL_ROOT_PASSWORD
 
           # Se agrega Resource para que Metrics Server calcule el % de CPU y Memoria para escalar 
           resources:
