@@ -18,15 +18,19 @@ spec:
           image: mysql:8.0
           ports:
             - containerPort: 3306
+
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mysql-secret
                   key: MYSQL_ROOT_PASSWORD
+
           volumeMounts:
-            - name: data
-              mountPath: /var/lib/mysql
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+
       volumes:
-        - name: data
-          emptyDir: {}
+        - name: init-script
+          configMap:
+            name: mysql-init-script
