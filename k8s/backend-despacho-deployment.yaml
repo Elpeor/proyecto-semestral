@@ -39,16 +39,23 @@ spec:
               memory: "512Mi"
 
           # HEALTH CHECKS (PROBES)
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 3002
+            failureThreshold: 30
+            periodSeconds: 5
+
           readinessProbe:
             httpGet:
-              path: /api/health
+              path: /actuator/health
               port: 3002
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 40
+            periodSeconds: 10
 
           livenessProbe:
             httpGet:
-              path: /api/health
+              path: /actuator/health
               port: 3002
-            initialDelaySeconds: 10
-            periodSeconds: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
