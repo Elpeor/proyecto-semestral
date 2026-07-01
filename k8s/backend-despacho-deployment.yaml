@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend-despacho
-          image: 022983448261.dkr.ecr.us-east-1.amazonaws.com/backend-despacho:${IMAGE_TAG}
+          image: 022983448261.dkr.ecr.us-east-1.amazonaws.com/backend-despacho:latest
           ports:
             - containerPort: 3002
           env:
