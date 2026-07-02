@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend-ventas
-          image: 022983448261.dkr.ecr.us-east-1.amazonaws.com/backend-ventas
+          image: 022983448261.dkr.ecr.us-east-1.amazonaws.com/backend-ventas:latest
           ports:
             - containerPort: 3001
           env:
