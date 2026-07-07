@@ -93,6 +93,37 @@ jobs:
           echo "$ECR_REPO_BACKEND_DESPACHO"
           echo "$IMAGE_TAG"
           echo "$ECR_REGISTRY/${ECR_REPO_BACKEND_DESPACHO}:${IMAGE_TAG}"
+
+
+      # ---------- Esperar MySQL y cargar datos ----------
+      - name: Inicializar Base de Datos
+        env:
+          EKS_NAMESPACE: ${{ secrets.EKS_NAMESPACE }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+        run: |
+
+          echo "Esperando a que MySQL esté listo..."
+
+          kubectl rollout status deployment/db -n $EKS_NAMESPACE
+
+          POD=$(kubectl get pods -n $EKS_NAMESPACE -l app=db -o jsonpath="{.items[0].metadata.name}")
+
+          echo "Pod encontrado: $POD"
+
+          sleep 20
+
+          kubectl exec -n $EKS_NAMESPACE $POD -- \
+          mysql -uroot -p$MYSQL_ROOT_PASSWORD tienda <<EOF
+
+          INSERT INTO venta (id_venta,direccion_compra,valor_compra,fecha_compra,despacho_generado)
+          VALUES
+          (1,'Av. Providencia 1234, Santiago',25000,'2026-07-07',FALSE);
+
+          INSERT INTO despacho (id_despacho,fecha_despacho,patente_camion,intento,id_compra,direccion_compra,valor_compra,despachado)
+          VALUES
+          (1,'2026-07-08','ABCD12',1,1,'Av. Providencia 1234, Santiago',25000,FALSE);
+
+          EOF
        
           
       # ---------- Actualizar BACKEND DESPACHO en EKS ----------
