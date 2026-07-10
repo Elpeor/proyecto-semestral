@@ -1,54 +1,125 @@
 services:
   mysql-db:
-    image: mysql:8.0
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+
+    image: tienda-mysql:latest
     container_name: mysql-tienda
     restart: always
+
     environment:
       MYSQL_ROOT_PASSWORD: admin123
       MYSQL_DATABASE: tienda
+
     ports:
       - "3306:3306"
+
     volumes:
       - mysql_data:/var/lib/mysql
+
     networks:
       - tienda-network
 
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -uroot -padmin123 || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+
   backend-ventas:
+    build:
+      context: ./back-Ventas_SpringBoot/Springboot-API-REST
+      dockerfile: Dockerfile
+
     image: backend-ventas:latest
     container_name: backend-ventas
     restart: always
+
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
+
     environment:
       APP_NAME: backend-ventas
       SERVER_PORT: 3001
+
       DB_URL: jdbc:mysql://mysql-db:3306/tienda?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
       DB_USER: root
       DB_PASSWORD: admin123
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/tienda?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin123
+
     ports:
       - "3001:3001"
+
     networks:
       - tienda-network
 
+
   backend-despacho:
+    build:
+      context: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
+      dockerfile: Dockerfile
+
     image: backend-despacho:latest
     container_name: backend-despacho
     restart: always
+
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
+
     environment:
       APP_NAME: backend-despacho
       SERVER_PORT: 3002
+
       DB_URL: jdbc:mysql://mysql-db:3306/tienda?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
       DB_USER: root
       DB_PASSWORD: admin123
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/tienda?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin123
+
     ports:
       - "3002:3002"
+
     networks:
       - tienda-network
 
+
+  frontend:
+    build:
+      context: ./front_despacho
+      dockerfile: Dockerfile
+
+    image: tienda-frontend:latest
+    container_name: tienda-frontend
+    restart: always
+
+    depends_on:
+      - backend-ventas
+      - backend-despacho
+
+    ports:
+      - "80:80"
+
+    networks:
+      - tienda-network
+
+
 volumes:
   mysql_data:
+
 
 networks:
   tienda-network:
