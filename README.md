@@ -1,3 +1,9 @@
+El sistema contiene dos backends Springboot, uno para el servicio de despachos y otro para el de ventas, hay un frontend React que utilizo los dos servicios anteriormente mencionados, finalmente hay una base de datos Mysql, esta última solo se utiliza en el despliegue del docker compose, mientras que en el despliegue de k8s se usa otra imágen de Mysql.
+
+En la carpeta .github se encuentra el workflow que utiliza Pipeline CI/CD para hacer el despliegue hacia la nube de aws, este utiliza la carpeta k8s, en la cual se encuentran los deployment, service y HPA del proyecto.
+
+El "Script inicial aws.yaml" se utiliza para crear el entorno aws necesario para que el sistema se puede desplegar, a continuación se comentará un tutorial con los pasos a seguir para hacer funcionar el sistema.
+
 En caso de querer utilizar una cuenta de aws ajena a la usada en este código seguir este paso adicional, si no es el caso saltarse el paso
 
 Se debe acceder a los deployment backend-despacho-deployment.yaml, backend-ventas-deployment.yaml y frontend-deployment.yaml e intercambiar el id de aws del apartado image por la id de la cuenta que se desee usar (para referencia, el número usado actualmente es 022983448261)
