@@ -40,7 +40,7 @@ export const TableCompras = () => {
             <table className="table-fixed">
               <thead>
                 <tr className="py-10">
-                  <th className="pr-10">Orden de compra Hola profe</th>
+                  <th className="pr-10">Orden de compra</th>
                   <th className="pr-10">Dirección</th>
                   <th className="pr-10">Fecha de compra</th>
                   <th className="pr-10">Valor total</th>
