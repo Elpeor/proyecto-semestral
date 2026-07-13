@@ -1,3 +1,7 @@
+En caso de querer utilizar una cuenta de aws ajena a la usada en este código seguir este paso adicional, si no es el caso saltarse el paso
+
+Se debe acceder a los deployment backend-despacho-deployment.yaml, backend-ventas-deployment.yaml y frontend-deployment.yaml e intercambiar el id de aws del apartado image por la id de la cuenta que se desee usar (para referencia, el número usado actualmente es 022983448261)
+ 
 Instrucciones de uso en caso de usar la misma cuenta
 
 Primero, se sube el archivo "Script inicial aws.yaml" a un cloudformation de aws para crear una pila, teniendo también los nombres del LabEksClusterRole y el LabEksNodeRole, los cuales son necesarios para la creación de la pila.
